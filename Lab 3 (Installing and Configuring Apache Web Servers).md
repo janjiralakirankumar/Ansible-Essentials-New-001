@@ -38,7 +38,7 @@
     <html>
       <body>
       <h1>Welcome to CloudThat</h1>
-      <img width="100%" src="https://github.com/user-attachments/assets/7045cd76-2b90-44da-a012-004382a4ef77">
+      <img width="100%" src="https://hub.docker.com/api/media/repos_logo/v1/library%2Fhttpd">
       </body>
     </html>
     ```
