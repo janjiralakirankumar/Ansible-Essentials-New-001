@@ -38,7 +38,7 @@
     <html>
       <body>
       <h1>Welcome to CloudThat</h1>
-      <img width="100%" src="https://cdn-labgd.nitrocdn.com/DgsEbCQFApREClXUXMwcDAPWJfHtBIby/assets/images/optimized/rev-f4df46d/content.cloudthat.com/consulting/wp-content/uploads/2024/06/27121001/Website-homepage-5.png">
+      <img width="100%" src="![image](https://github.com/user-attachments/assets/7045cd76-2b90-44da-a012-004382a4ef77)">
       </body>
     </html>
     ```
