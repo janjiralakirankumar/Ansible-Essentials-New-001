@@ -11,7 +11,7 @@
     ```
     - Save the file using `ESCAPE + :wq!`.
 
-    > **Note:** In real-life scenarios, if a managed node is also used as the Ansible control node, you can include `localhost` in the hosts inventory file.
+    > **Note:** In real-life scenarios, Ansible control node can also be used as a Managed node, It’s a convenient way to perform local operations, test playbooks, and manage the local system itself. you can include `localhost` in the hosts inventory file.
 
 2. **Get Memory Details:**
     - Run the following ad-hoc command to get memory details of the hosts:
