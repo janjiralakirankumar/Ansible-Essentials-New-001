@@ -1,4 +1,3 @@
-```markdown
 # Ansible Labs
 
 ## Login to AWS Console
@@ -164,4 +163,3 @@
     ```sh
     ansible all -m ping
     ```
-```
