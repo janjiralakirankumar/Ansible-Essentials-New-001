@@ -55,12 +55,20 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 sudo ./aws/install
 ```
-
-5. **Installing Ansible:**
+Now, Check the AWS CLI Version
 ```
-sudo apt-get install ansible==4.10.0 -y
+aws --version
 ```
-
+5. **Updating and Installing Ansible:**
+```
+sudo yum update
+```
+```
+pip3 install ansible==4.10.0
+```
+```
+ansible --version
+```
 6. **For Authentication with AWS we need to provide `IAM User's CLI Credentials`**
 ```
 aws configure
