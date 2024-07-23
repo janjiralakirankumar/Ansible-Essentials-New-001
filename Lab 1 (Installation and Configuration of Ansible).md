@@ -79,6 +79,17 @@ aws configure
 | AKIAXMWJXSSHRD27T6SC | H4Vh0U5oenKfmJ/+FEUcbaGbDjcnGAmZvQLX7zTT |
 
 ---------------------------------------------------------------------
+#### Once configured, do a smoke test to check if your credentials are valid and got the access to AWS account.
+
+You can check using any one command or both.
+```
+aws s3 ls
+```
+(Or)
+```
+aws iam list-users
+```
+---------------------------------------------------------------------
 
 7. **Create the Playbook for Creating Managed Nodes:**
     - Create a file named `ec2-playbook.yml`:
