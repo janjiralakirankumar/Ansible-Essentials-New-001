@@ -43,7 +43,7 @@ Set the hostname as 'Control-Node'.
 
 3. **Install Python:**
     ```sh
-    sudo yum install python3-pip wget
+    sudo yum install python3-pip wget unzip
     python3 --version
     sudo pip3 install --upgrade pip
     ```
