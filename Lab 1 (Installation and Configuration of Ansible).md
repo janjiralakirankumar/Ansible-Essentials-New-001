@@ -176,7 +176,17 @@ vi ec2-playbook.yml
     - debug:
         msg: "{{ ec2var.results[1].instances[0].private_ip }}"
   ```
-   
+
+### Here’s a summarized list of what the playbook does:
+
+1. **Obtain Metadata Token**: Fetches a security token from the EC2 instance metadata service.
+2. **Fetch Instance Metadata**: Retrieves the current EC2 instance's region, AMI ID, keypair, instance type, subnet ID, and security groups.
+3. **Generate SSH Keypair**: Creates a new SSH keypair for secure access.
+4. **Retrieve Public Key**: Reads the newly created public key.
+5. **Launch EC2 Instances**: Creates two new EC2 instances using the retrieved metadata and new SSH keypair.
+6. **Create Directory**: Ensures the `/etc/ansible` directory exists.
+7. **Display IP Addresses**: Outputs the private IP addresses of the newly created instances.
+
 9. **Run the Playbook:**
     ```sh
     ansible-playbook ec2-playbook.yml
