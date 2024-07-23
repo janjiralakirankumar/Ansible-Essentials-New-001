@@ -30,11 +30,11 @@ Once the `Ansible-ControlNode` is up and running. Now, SSH into the machine usin
 [Click here](https://mobaxterm.mobatek.net/download-home-edition.html) to download MobaXterm (**Note:** Choose `Installer Edition` and install on your Laptop) 
 
 1. **Set Hostname:**
-    - Once the EC2 instance is up & running, SSH into it and set the hostname as 'Control-Node'.
+Set the hostname as 'Control-Node'.
     ```sh
     sudo hostnamectl set-hostname Control-Node
+    bash
     ```
-    - Exit and login again to see the new hostname or type `bash` to open another shell which shows the new hostname.
 
 2. **Update the Package Repository:**
     ```sh
