@@ -1,44 +1,76 @@
-## Login to AWS Console
+## Lab 1: Installation and Configuration of Ansible
 
-### Lab 1: Installation and Configuration of Ansible
+### Task-0: The first step is to `Manually Launch an Ansible-ControlNode` with the below configuration:
 
-1. **Launch EC2 Instance:**
-    - Launch a RHEL 9 machine in `us-east-1`.
-    - Choose `t2.micro`.
-    - In the security group, allow SSH (22) and HTTP (80) for all incoming traffic.
-    - Add Tag Name: `Ansible-ControlNode`.
+#### Step-01: Pre-requisites:
 
-2. **Set Hostname:**
+In EC2 Dashboard, and under "Network & Security," `create a key pair` and a `security group.`
+
+1. Create key pair with name: `Ansible-Keypair-YourName`
+2. Create security group with name: `Ansible-SG-YourName`
+   (Include Ports: `22 [SSH],` `80 [HTTP]` for all incoming traffic.)
+
+Once you are ready, While Manually Launching an `Ansible-ControlNode`, select the above `Ansible-Keypair-YourName` and `Ansible-SG-YourName`
+
+#### Step-02: Steps for Manually launching the Anchor EC2 Instance
+
+* **Region:** North Virginia (us-east-1).
+* **Use tag Name:** `Ansible-ControlNode`
+* **AMI Type and OS Version:** `Red Hat Enterprise Linux 9 (HVM)`
+* **Instance type:** `t2.micro`
+* Choose the existing Keypair with the Name: `Ansible-Keypair-YourName`
+* In security groups, Choose the existing security group with name: `Ansible-SG-YourName`
+* **Configure Storage:** 10 GiB
+* Click on `Launch Instance.` to launch it.
+---------------------------------------------------------------------
+### Task-1: Install AWS CLI, Ansible and Dependencies and Create a Playbook, Ececute to launch 2 Managed Nodes.
+
+Once the `Ansible-ControlNode` is up and running. Now, SSH into the machine using `MobaXterm` or `Putty` with the username `ubuntu` and continue Task-1:
+
+[Click here](https://mobaxterm.mobatek.net/download-home-edition.html) to download MobaXterm (**Note:** Choose `Installer Edition` and install on your Laptop) 
+
+1. **Set Hostname:**
     - Once the EC2 instance is up & running, SSH into it and set the hostname as 'Control-Node'.
     ```sh
     sudo hostnamectl set-hostname Control-Node
     ```
     - Exit and login again to see the new hostname or type `bash` to open another shell which shows the new hostname.
 
-3. **Update the Package Repository:**
+2. **Update the Package Repository:**
     ```sh
     sudo yum check-update
     ```
 
-4. **Install Python:**
+3. **Install Python:**
     ```sh
     sudo yum install python3-pip wget
     python3 --version
     sudo pip3 install --upgrade pip
     ```
 
-5. **Install AWS CLI, Boto, Boto3, and Ansible:**
-    ```sh
-    sudo pip3 install awscli boto boto3
-    sudo pip3 install ansible==4.10.0
-    pip show ansible
-    ```
+4. **Configure AWS CLI:**
+    Installing `AWS CLI`
+```
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+```
 
-6. **Configure AWS CLI:**
-    ```sh
-    aws configure
-    ```
-    - Add AWS Access Key and AWS Secret Access Key.
+5. **Installing Ansible:**
+```
+sudo apt-get install ansible==4.10.0 -y
+```
+
+6. **For Authentication with AWS we need to provide `IAM User's CLI Credentials`**
+```
+aws configure
+```
+#### Credentials Example:
+| **Access Key ID** | **Secret Access Key** |
+| ----------------- | --------------------- |
+| AKIAXMWJXSSHRD27T6SC | H4Vh0U5oenKfmJ/+FEUcbaGbDjcnGAmZvQLX7zTT |
+
+---------------------------------------------------------------------
 
 7. **Create the Playbook for Creating Managed Nodes:**
     - Create a file named `ec2-playbook.yml`:
@@ -124,7 +156,7 @@
     ```
 
 9. **Add Managed Node IP Addresses:**
-    - Edit the hosts file:
+* Edit the hosts file:
     ```sh
     sudo vi /etc/ansible/hosts
     ```
@@ -145,16 +177,20 @@
     ```
 
 11. **Set Hostnames for Managed Nodes:**
-    - SSH into each node and set the hostnames:
+* SSH into each node and set the hostnames:
+  - ssh ec2-user@<Replace Node 1 IP>
     ```sh
-    ssh ec2-user@<Replace Node 1 IP>
     sudo hostnamectl set-hostname managed-node-1
-    exit
-
-    ssh ec2-user@<Replace Node 2 IP>
-    sudo hostnamectl set-hostname managed-node-2
-    exit
+    bash
     ```
+    exit from managed-node-1
+    
+  - ssh ec2-user@<Replace Node 2 IP>
+    ```sh
+    sudo hostnamectl set-hostname managed-node-2
+    bash
+    ```
+    exit from managed-node-2
 
 12. **Check Managed Nodes:**
     - Use the ping module to check if the managed nodes are able to interpret the Ansible modules:
