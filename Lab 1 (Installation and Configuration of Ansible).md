@@ -97,6 +97,7 @@ Create a New file named `ec2-playbook.yml`:
    ```
    vi ec2-playbook.yml
    ```
+   
    ```yaml
     ---
     - hosts: localhost
@@ -171,8 +172,8 @@ Create a New file named `ec2-playbook.yml`:
 
         - debug:
             msg: "{{ ec2var.results[1].instances[0].private_ip }}"
-    ```
-
+   ```
+   
 9. **Run the Playbook:**
     ```sh
     ansible-playbook ec2-playbook.yml
