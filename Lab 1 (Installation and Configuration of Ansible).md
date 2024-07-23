@@ -92,8 +92,12 @@ aws iam list-users
 ---------------------------------------------------------------------
 
 7. **Create the Playbook for Creating Managed Nodes:**
-    - Create a file named `ec2-playbook.yml`:
-    ```yaml
+
+Create a New file named `ec2-playbook.yml`:
+   ```
+   vi ec2-playbook.yml
+   ```
+   ```yaml
     ---
     - hosts: localhost
       connection: local
@@ -169,12 +173,12 @@ aws iam list-users
             msg: "{{ ec2var.results[1].instances[0].private_ip }}"
     ```
 
-8. **Run the Playbook:**
+9. **Run the Playbook:**
     ```sh
     ansible-playbook ec2-playbook.yml
     ```
 
-9. **Add Managed Node IP Addresses:**
+10. **Add Managed Node IP Addresses:**
 * Edit the hosts file:
     ```sh
     sudo vi /etc/ansible/hosts
