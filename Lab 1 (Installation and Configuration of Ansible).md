@@ -49,8 +49,9 @@ Set the hostname as 'Control-Node'.
     ```
 
 4. **Configure AWS CLI:**
-    Installing `AWS CLI`
+    Installing `AWS CLI`, boto, boto3.
 ```
+sudo pip install boto boto3
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
@@ -94,85 +95,87 @@ aws iam list-users
 7. **Create the Playbook for Creating Managed Nodes:**
 
 Create a New file named `ec2-playbook.yml`:
-   ```
-   vi ec2-playbook.yml
-   ```
-   
-   ```yaml
-    ---
-    - hosts: localhost
-      connection: local
+```
+vi ec2-playbook.yml
+```
 
-      tasks:
-        - name: Execute curl command to get token
-          shell: "curl -X PUT 'http://169.254.169.254/latest/api/token' -H 'X-aws-ec2-metadata-token-ttl-seconds: 21600'"
-          register: TOKEN
+```  
+---
+- hosts: localhost
+  connection: local
 
-        - name: Get region of instance
-          shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' http://169.254.169.254/latest/meta-data/placement/region/"
-          register: region
+  tasks:
+    - name: Execute curl command to get token
+      shell: "curl -X PUT 'http://169.254.169.254/latest/api/token' -H 'X-aws-ec2-metadata-token-ttl-seconds: 21600'"
+      register: TOKEN
 
-        - name: Get AMI ID of instance
-          shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' http://169.254.169.254/latest/meta-data/ami-id"
-          register: ami_id
+    - name: Get region of instance
+      shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' http://169.254.169.254/latest/meta-data/placement/region/"
+      register: region
 
-        - name: Get keypair of instance
-          shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' http://169.254.169.254/latest/meta-data/public-keys/| cut -c 3-100 "
-          register: kp
+    - name: Get AMI ID of instance
+      shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' http://169.254.169.254/latest/meta-data/ami-id"
+      register: ami_id
 
-        - name: Get Instance Type of instance
-          shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' http://169.254.169.254/latest/meta-data/instance-type"
-          register: instance_type
+    - name: Get keypair of instance
+      shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' http://169.254.169.254/latest/meta-data/public-keys/| cut -c 3-100 "
+      register: kp
 
-        - name: Get subnet id of instance
-          shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' -v http://169.254.169.254/latest/meta-data/network/interfaces/macs/$(curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' -v http://169.254.169.254/latest/meta-data/network/interfaces/macs)/subnet-id"
-          register: subnet
+    - name: Get Instance Type of instance
+      shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' http://169.254.169.254/latest/meta-data/instance-type"
+      register: instance_type
 
-        - name: Get security group of instance
-          shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' -v http://169.254.169.254/latest/meta-data/network/interfaces/macs/$(curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' -v http://169.254.169.254/latest/meta-data/network/interfaces/macs)/security-group-ids/"
-          register: secgrp
 
-        - name: Generate SSH keypair
-          openssh_keypair:
-            force: yes
-            path: /home/ec2-user/.ssh/id_rsa
+    - name: Get subnet id of instance
+      shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' -v http://169.254.169.254/latest/meta-data/network/interfaces/macs/$(curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' -v http://169.254.169.254/latest/meta-data/network/interfaces/macs)/subnet-id"
+      register: subnet
 
-        - name: Get the public key
-          shell: cat /home/ec2-user/.ssh/id_rsa.pub
-          register: pubkey
+    - name: Get security group of instance
+      shell: "curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' -v http://169.254.169.254/latest/meta-data/network/interfaces/macs/$(curl -H 'X-aws-ec2-metadata-token:{{ TOKEN.stdout }}' -v http://169.254.169.254/latest/meta-data/network/interfaces/macs)/security-group-ids/"
+      register: secgrp
 
-        - name: Create EC2 instance
-          ec2:
-            key_name: "{{ kp.stdout }}"
-            group_id: "{{ secgrp.stdout }}"
-            instance_type: "{{ instance_type.stdout }}"
-            image: "{{ ami_id.stdout }}"         # "ami-0931978297f275f71"
-            wait: true
-            region: "{{ region.stdout }}"
-            instance_tags:
-              Name: "{{ item }}"
-            vpc_subnet_id: "{{ subnet.stdout }}"
-            assign_public_ip: yes
-            user_data: |
-               #!/bin/bash
-               echo "{{ pubkey.stdout }}" >> /home/ec2-user/.ssh/authorized_keys
-          register: ec2var
-          loop:
-              - managed-node-1
-              - managed-node-2
 
-        - name: Make ansible directory
-          file:
-            path: /etc/ansible
-            state: directory
-          become: yes
+    - name: Generate SSH keypair
+      openssh_keypair:
+        force: yes
+        path: /home/ec2-user/.ssh/id_rsa
 
-        - debug:
-            msg: "{{ ec2var.results[0].instances[0].private_ip }}"
+    - name: Get the public key
+      shell: cat /home/ec2-user/.ssh/id_rsa.pub
+      register: pubkey
 
-        - debug:
-            msg: "{{ ec2var.results[1].instances[0].private_ip }}"
-   ```
+    - name: Create EC2 instance
+      ec2:
+        key_name: "{{ kp.stdout }}"
+        group_id: "{{ secgrp.stdout }}"
+        instance_type: "{{ instance_type.stdout }}"
+        image: "{{ ami_id.stdout }}"         # "ami-0931978297f275f71"
+        wait: true
+        region: "{{ region.stdout }}"
+        instance_tags:
+          Name: "{{ item }}"
+        vpc_subnet_id: "{{ subnet.stdout }}"
+        assign_public_ip: yes
+        user_data: |
+           #!/bin/bash
+           echo "{{ pubkey.stdout }}" >> /home/ec2-user/.ssh/authorized_keys
+      register: ec2var
+      loop:
+          - managed-node-1
+          - managed-node-2
+
+    - name: Make ansible directory
+      file:
+        path: /etc/ansible
+        state: directory
+      become: yes
+
+    - debug:
+        msg: "{{ ec2var.results[0].instances[0].private_ip }}"
+
+    - debug:
+        msg: "{{ ec2var.results[1].instances[0].private_ip }}"
+  ```
    
 9. **Run the Playbook:**
     ```sh
