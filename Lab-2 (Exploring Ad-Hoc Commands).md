@@ -116,8 +116,15 @@
 
 ## Playbook
 
-1. **Create a Playbook:**
-    - Create a file named `first.yml`:
+### Create a Playbook:**
+
+Create a file named `first.yml`:
+
+    ```yaml
+    vi first.yml
+    ```
+Copy paste the below code into it and save (:wq!)
+    
     ```yaml
     ---
     - name: first play
@@ -135,13 +142,14 @@
             state: touch
     ```
 
-2. **Run the Playbook:**
+3. **Run the Playbook:**
     ```sh
     ansible-playbook first.yml
     ```
 
-3. **List Files:**
+4. **List Files:**
     - Verify the files created by the playbook:
     ```sh
     ansible all -m command -a "ls -l"
     ```
+### ============================ END of LAB ============================
