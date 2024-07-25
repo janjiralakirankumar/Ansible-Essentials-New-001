@@ -114,42 +114,42 @@
     ```
     - Save the file using `ESCAPE + :wq!`.
 
-## Playbook
+## Creating Playbook and Executing:
 
-### Create a Playbook:**
+#### 1. Create a file named `first.yml` and Copy paste the below code:
 
-### 1. Create a file named `first.yml` and Copy paste the below code:
+```
+vi first.yml
+```
 
-    ```
-    vi first.yml
-    ```
-Copy paste the below code into it and save (:wq!)
-    
-    ```
-    ---
-    - name: first play
-      hosts: all
-      become: yes
-      tasks:
-        - name: create a directory
-          file:
-            path: /test
-            state: directory
-        - name: create a new file
-          file:
-            path: demo.txt
-            mode: 0664
-            state: touch
-    ```
+```
+---
+- name: first play
+  hosts: all
+  become: yes
+  tasks:
+    - name: create a directory
+      file:
+        path: /test
+        state: directory
+    - name: create a new file
+      file:
+        path: /test/demo.txt
+        mode: '0664'
+        state: touch
+```
+
 #### 2. Run the Playbook:
     
-    ```
-    ansible-playbook first.yml
-    ```
+```
+ansible-playbook first.yml
+```
+
 #### 3. List Files:
 Verify the files created by the playbook:
     
-    ```
-    ansible all -m command -a "ls -l"
-    ```
+```
+ansible all -m command -a "ls -l"
+```
+
 ### ============================ END of LAB ============================
