@@ -68,6 +68,9 @@ ansible-playbook implement-vars.yml
 
 Create a file named `index1.html` with the following content:
 
+```
+vi index1.html
+```
 ```html
 <html>
   <body>
