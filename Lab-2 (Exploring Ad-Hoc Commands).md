@@ -120,12 +120,12 @@
 
 ### 1. Create a file named `first.yml` and Copy paste the below code:
 
-    ```yaml
+    ```
     vi first.yml
     ```
 Copy paste the below code into it and save (:wq!)
     
-    ```yaml
+    ```
     ---
     - name: first play
       hosts: all
@@ -141,15 +141,15 @@ Copy paste the below code into it and save (:wq!)
             mode: 0664
             state: touch
     ```
-
 #### 2. Run the Playbook:
-    ```sh
+    
+    ```
     ansible-playbook first.yml
     ```
-
 #### 3. List Files:
-    - Verify the files created by the playbook:
-    ```sh
+Verify the files created by the playbook:
+    
+    ```
     ansible all -m command -a "ls -l"
     ```
 ### ============================ END of LAB ============================
