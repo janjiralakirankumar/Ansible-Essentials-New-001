@@ -7,7 +7,6 @@ Create a file named `install-apache.yml` with the following content:
 ```
 vi install-apache.yml
 ```
-
 ```yaml
 ---
 - name: This play will install Apache web servers on all the hosts
