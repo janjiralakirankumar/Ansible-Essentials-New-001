@@ -1,7 +1,13 @@
 ## Lab 3: Installing and Configuring Apache Web Servers
 
-1. **Create the Ansible Playbook:**
-    - Create a file named `install-apache.yml` with the following content:
+#### 1. Create the Ansible Playbook:
+
+Create a file named `install-apache.yml` with the following content:
+
+    ```
+    vi install-apache.yml
+    ```
+    
     ```yaml
     ---
     - name: This play will install Apache web servers on all the hosts
@@ -32,8 +38,14 @@
             state: started
     ```
 
-2. **Create the `index.html` File:**
-    - Create a file named `index.html` with the following content:
+#### 2. Create the `index.html` File:
+
+Create a file named `index.html` with the following content:
+
+    ```
+    vi index.html
+    ```   
+    
     ```html
     <html>
       <body>
@@ -43,16 +55,21 @@
     </html>
     ```
 
-3. **Run the Ansible Playbook:**
+#### 3. Run the Ansible Playbook:
+    
     ```sh
     ansible-playbook install-apache.yml
     ```
 
-4. **Verify Apache Installation:**
-    - Use `curl` to check if Apache is serving the `index.html` page:
+#### 4. Verify Apache Installation:
+
+Use `curl` to check if Apache is serving the `index.html` page:
+
     ```sh
     curl http://<private-ip-of-vm-1>
     curl http://<private-ip-of-vm-2>
     ```
 
     Replace `<private-ip-of-vm-1>` and `<private-ip-of-vm-2>` with the actual private IP addresses of your VMs.
+
+#### ==================== END of LAB ====================
