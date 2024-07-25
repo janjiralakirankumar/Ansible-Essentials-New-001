@@ -4,72 +4,74 @@
 
 Create a file named `install-apache.yml` with the following content:
 
-    ```
-    vi install-apache.yml
-    ```
+```
+vi install-apache.yml
+```
+
+```yaml
+---
+- name: This play will install Apache web servers on all the hosts
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install httpd using yum
+      yum:
+        name: httpd
+        update_cache: yes
+        state: latest
     
-    ```yaml
-    ---
-    - name: This play will install Apache web servers on all the hosts
-      hosts: all
-      become: yes
-      tasks:
-        - name: Install httpd using yum
-          yum:
-            name: httpd
-            update_cache: yes
-            state: latest
-        
-        - name: Upload custom index.html to all hosts
-          copy:
-            src: "index.html"
-            dest: "/var/www/html/index.html"
-        
-        - name: Set attributes for index.html
-          file:
-            path: /var/www/html/index.html
-            owner: apache
-            group: apache
-            mode: 0644
-        
-        - name: Start the httpd service
-          service:
-            name: httpd
-            state: started
-    ```
+    - name: Upload custom index.html to all hosts
+      copy:
+        src: "index.html"
+        dest: "/var/www/html/index.html"
+    
+    - name: Set attributes for index.html
+      file:
+        path: /var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: 0644
+    
+    - name: Start the httpd service
+      service:
+        name: httpd
+        state: started
+```
 
 #### 2. Create the `index.html` File:
 
 Create a file named `index.html` with the following content:
 
-    ```
-    vi index.html
-    ```   
-    
-    ```html
-    <html>
-      <body>
-      <h1>Welcome to CloudThat</h1>
-      <img width="100%" src="https://10web.io/wp-content/uploads/2022/05/apache-logo-742x416.jpg">
-      </body>
-    </html>
-    ```
+```
+vi index.html
+```   
+
+```html
+<html>
+  <body>
+  <h1>Welcome to CloudThat</h1>
+  <img width="100%" src="https://10web.io/wp-content/uploads/2022/05/apache-logo-742x416.jpg">
+  </body>
+</html>
+```
 
 #### 3. Run the Ansible Playbook:
     
-    ```sh
-    ansible-playbook install-apache.yml
-    ```
+```sh
+ansible-playbook install-apache.yml
+```
 
 #### 4. Verify Apache Installation:
 
 Use `curl` to check if Apache is serving the `index.html` page:
 
-    ```sh
-    curl http://<private-ip-of-vm-1>
-    curl http://<private-ip-of-vm-2>
-    ```
+```sh
+curl http://<private-ip-of-vm-1>
+```
+```
+curl http://<private-ip-of-vm-2>
+```
 
-    Replace `<private-ip-of-vm-1>` and `<private-ip-of-vm-2>` with the actual private IP addresses of your VMs.
+Replace `<private-ip-of-vm-1>` and `<private-ip-of-vm-2>` with the actual private IP addresses of your VMs.
 
 #### ==================== END of LAB ====================
