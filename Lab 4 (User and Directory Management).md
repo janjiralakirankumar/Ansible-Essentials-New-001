@@ -6,6 +6,9 @@
 
 Create a file named `putfile.yml` with the following content:
 
+```
+vi putfile.yml
+```
 ```yaml
 ---
 - hosts: all
@@ -45,6 +48,9 @@ ansible all -m command -a "ls -l /home/cloudthat" -b
 
 Create a file named `p2.yml` with the following content:
 
+```
+vi p2.yml
+```
 ```yaml
 ---
 - hosts: all
@@ -103,6 +109,9 @@ ansible all -a "sudo cat /home/test/ansible/hello.txt"
 
 Create a file named `service.yml` with the following content:
 
+```
+vi service.yml
+```
 ```yaml
 ---
 - hosts: all
@@ -131,19 +140,19 @@ ansible-playbook service.yml
 
 #### 3. Verify Actions:
 
-Check if `httpd` has been uninstalled:
+1. Check if `httpd` has been uninstalled:
 
 ```sh
 ansible all -m command -a "yum list httpd" -b
 ```
 
-Verify the file was downloaded:
+2. Verify the file was downloaded:
 
 ```sh
 ansible all -m command -a "ls -l /tmp" -b
 ```
 
-Check the SELinux status:
+3. Check the SELinux status:
 
 ```sh
 ansible all -m command -a "getenforce" -b
