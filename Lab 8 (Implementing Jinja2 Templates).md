@@ -1,4 +1,4 @@
-## Lab 9: Implementing Jinja2 Templates
+## Lab 8: Implementing Jinja2 Templates
 
 ### Steps:
 
