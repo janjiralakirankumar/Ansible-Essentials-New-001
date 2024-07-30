@@ -1,4 +1,4 @@
-## Lab 10: Implementing Ansible Roles
+## Lab 9: Implementing Ansible Roles
 
 ### Task 1: Implementing Ansible Roles
 
